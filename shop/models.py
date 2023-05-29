@@ -76,12 +76,14 @@ class Product(models.Model):
     slug = models.SlugField(
         unique=True, auto_created=True, blank=True, null=True)
     category = models.ForeignKey(ProductCategory, on_delete=models.CASCADE)
+    type = models.ForeignKey(ProductType, on_delete=models.CASCADE)
+    brand = models.ForeignKey(ProductBrand, on_delete=models.CASCADE)
     description = models.CharField(max_length=300)
+    stock = models.IntegerField(null=True, blank=True)
     price = models.DecimalField(max_digits=5, decimal_places=2)
     image = models.ImageField(upload_to='product/')
     warranty = models.ForeignKey(WarrantyPeriod, on_delete=models.CASCADE)
-    type = models.ForeignKey(ProductType, on_delete=models.CASCADE)
-    brand = models.ForeignKey(ProductBrand, on_delete=models.CASCADE)
+    is_available = models.BooleanField(default=True,null=True)
     created_at = models.DateTimeField(auto_now_add=True, blank=True, null=True)
 
     def __str__(self):
@@ -94,3 +96,4 @@ class Product(models.Model):
     class Meta:
         verbose_name = 'Product'
         verbose_name_plural = 'Products'
+        ordering = ('-created_at',)
